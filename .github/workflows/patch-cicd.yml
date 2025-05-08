@@ -1,0 +1,29 @@
+name: Patch Workflow files
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: ${{ github.repository == 'quartz-themes/quartz-themes-preview-template' }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for git info
+      - name: Update Quartz
+        run: |
+          cp manual-update.sh ../
+          cd ..
+          chmod +x manual-update.sh
+          ./manual-update.sh
+          
